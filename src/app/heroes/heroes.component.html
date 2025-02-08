@@ -5,6 +5,7 @@
     <li>
         <a routerLink="/hero/{{hero.id}}">
             <span class="badge">{{hero.id}}</span> {{hero.name}}
+            <img [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension" [alt]="hero.name" class="hero-image" />
         </a>
     </li>
     }

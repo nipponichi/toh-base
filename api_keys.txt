@@ -1,0 +1,6 @@
+public: dc0d5511d6e318116dbaf0799351db12
+private: d919aa695707d4088255cd639fdd7f0f801a7a49
+url: https://developer.marvel.com/account
+
+test url: hash = (ts+private+public) https://gateway.marvel.com/v1/public/comics?ts=patata&apikey=dc0d5511d6e318116dbaf0799351db12&hash=79da8e2cf18d3ec8c0c147f54eca2e00
+md5 generator: https://www.md5online.org/md5-encrypt.html
