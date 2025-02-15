@@ -6,4 +6,7 @@ export interface Hero {
       path: string;
       extension: string;
     };
+    comics: {
+      available: number;
+    }
   }

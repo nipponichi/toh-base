@@ -1,17 +1,24 @@
-@if (hero) {
-    <div>
-        <h2>{{ hero.name | uppercase }} Details</h2>
-        <div><span>id: </span>{{ hero.id }}</div>
-        <div>
-            <label for="hero-name">Hero name: </label>
-            <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name" />
-        </div>
-        <div>
-            <img [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension" [alt]="hero.name" />
-        </div>
-        <button type="button" (click)="goBack()">go back</button>
+<div *ngIf="hero === undefined">Cargando...</div>
+
+<div *ngIf="hero; else noHero">
+  <h2>{{ hero.name | uppercase }} Details</h2>
+  <div>
+    <div><span>ID: </span>{{ hero.id }}</div>
+    <div><span>Name: </span>{{ hero.name }}</div>
+    <img [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension" [alt]="hero.name" />
+
+    <div *ngIf="hero.comics.available > 0; else noComics">
+      <p>Aparece en {{ hero.comics.available }} comics</p>
     </div>
-    } @else {
-    <h1>NO SE HA ENCONTRADO EL HÉROE</h1>
-    }
-    
+
+    <ng-template #noComics>
+      <p>No aparece en comics</p>
+    </ng-template>
+
+    <button type="button" (click)="goBack()">go back</button>
+  </div>
+</div>
+
+<ng-template #noHero>
+  <h1>NO SE HA ENCONTRADO EL HÉROE</h1>
+</ng-template>

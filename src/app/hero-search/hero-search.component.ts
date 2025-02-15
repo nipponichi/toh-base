@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './hero-search.component.scss'
 })
 export class HeroSearchComponent implements OnInit {
-  heroes$!: Observable<Hero[]>;
+  heroes$!: Observable<Hero[]> | undefined;
   private searchTerms = new Subject<string>();
 
   constructor(private heroService: HeroService) {}
@@ -23,7 +23,7 @@ export class HeroSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.heroes$ = this.searchTerms.pipe(
-      debounceTime(300),
+      debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.heroService.searchHeroes(term)),
     );

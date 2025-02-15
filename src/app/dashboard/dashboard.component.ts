@@ -4,7 +4,7 @@ import { Hero } from '../hero.interface';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Subject, switchMap, tap } from 'rxjs';
+import { firstValueFrom, debounceTime, distinctUntilChanged, Subject, switchMap, tap } from 'rxjs';
 import { HeroSearchComponent } from '../hero-search/hero-search.component';
 
 @Component({
@@ -15,16 +15,32 @@ import { HeroSearchComponent } from '../hero-search/hero-search.component';
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
+  public currentPage: number = 1;
+  public heroesPerPage: number = 20;
+  public totalPages: number = 0;
+  public totalHeroes: number = 0;
 
   constructor(private heroService: HeroService) { }
 
-  ngOnInit(): void {
-    this.getHeroes();
+  async ngOnInit(): Promise<void> {
+    await this.loadTotalHeroes();
+    await this.getHeroes();
   }
 
-  getHeroes(): void {
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes.slice(1, 5));
+  async loadTotalHeroes() {
+    this.totalHeroes = await firstValueFrom(this.heroService.getTotalHeroes());
+  }
+
+  async getHeroes() {
+    const offset = this.calculateOffset()
+    const limit: number = 5;
+    console.log('getHeroes '+ offset)
+    this.heroes = await firstValueFrom(this.heroService.getHeroes(offset, limit));
+  }
+  
+  calculateOffset(): number {
+      const maxOffset = Math.max(0, this.totalHeroes - this.heroesPerPage);
+      return this.totalHeroes > this.heroesPerPage ? Math.floor(Math.random() * maxOffset) : 0;
   }
 
 }
